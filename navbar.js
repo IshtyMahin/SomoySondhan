@@ -1,5 +1,4 @@
-
-let admin = false;
+let is_admin = false;
 const isAdmin = async () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
@@ -19,7 +18,7 @@ const isAdmin = async () => {
         if (userData) {
           // console.log(userData);
 
-          admin = userData.is_superuser;
+          is_admin = userData.is_superuser;
         }
       })
       .catch((error) => {
@@ -41,13 +40,11 @@ const checkLoggedIn = () => {
     document.querySelectorAll(".admin-item").forEach((item) => {
       item.style.display = "none";
     });
-    isAdmin().then((isAdmin) => {
-      if (isAdmin) {
-        document.querySelectorAll(".admin-item").forEach((item) => {
-          item.style.display = "inline-block";
-        });
-      }
-    });
+    if (is_admin) {
+      document.querySelectorAll(".admin-item").forEach((item) => {
+        item.style.display = "inline-block";
+      });
+    }
   } else {
     document.querySelectorAll(".navbar-item").forEach((item) => {
       item.style.display = "inline-block";
@@ -60,7 +57,6 @@ const checkLoggedIn = () => {
     });
   }
 };
-
 
 window.addEventListener("load", generateCategoryLinks, isAdmin);
 
@@ -75,5 +71,3 @@ const handleLogout = () => {
     console.log("User not logged in");
   }
 };
-
-
