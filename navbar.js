@@ -1,50 +1,62 @@
-let admin_navbar = false;
-
+let admin_navbar = false
 const isAdmin_navbar = async () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
-  
-  showSpinner()
-  if (token) {
 
-    return fetch(
-      `https://somoysondhan-backend.onrender.com/user/${userId}/is_superuser/`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((userData) => {
-        if (userData) {
-          admin_navbar = userData.is_superuser;
-          // Call checkLoggedIn() after updating admin_navbar
-          checkLoggedIn();
+  // Show spinner when checking user role
+  showSpinner();
+
+  if (token) {
+    try {
+      const response = await fetch(
+        `https://somoysondhan-backend.onrender.com/user/${userId}/is_superuser/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching user information:", error);
-      });
+      );
+
+      const userData = await response.json();
+
+      if (userData) {
+        admin_navbar = userData.is_superuser;
+        // Call checkLoggedIn() after updating admin_navbar
+        checkLoggedIn();
+      }
+    } catch (error) {
+      console.error("Error fetching user information:", error);
+    }
   }
-  hideSpinner()
+
+  // Hide spinner after processing
+  hideSpinner();
 };
 
-const checkLoggedIn = () => {
-  showSpinner()
+const checkLoggedIn = async () => {
+  // Show spinner when checking login status
+  showSpinner();
+
   const token = localStorage.getItem("token");
-  console.log(token);
+
+  document.querySelectorAll(".navbar-item").forEach((item) => {
+    item.style.display = "none";
+  });
+
+  document.querySelectorAll(".profile-item").forEach((item) => {
+    item.style.display = "none";
+  });
+
+  document.querySelectorAll(".admin-item").forEach((item) => {
+    item.style.display = "none";
+  });
+
   if (token) {
-    document.querySelectorAll(".navbar-item").forEach((item) => {
-      item.style.display = "none";
-    });
     document.querySelectorAll(".profile-item").forEach((item) => {
       item.style.display = "inline-block";
     });
-    document.querySelectorAll(".admin-item").forEach((item) => {
-      item.style.display = "none";
-    });
+
     if (admin_navbar) {
       document.querySelectorAll(".admin-item").forEach((item) => {
         item.style.display = "inline-block";
@@ -54,20 +66,20 @@ const checkLoggedIn = () => {
     document.querySelectorAll(".navbar-item").forEach((item) => {
       item.style.display = "inline-block";
     });
-    document.querySelectorAll(".admin-item").forEach((item) => {
-      item.style.display = "none";
-    });
-    document.querySelectorAll(".profile-item").forEach((item) => {
-      item.style.display = "none";
-    });
   }
-  hideSpinner()
+
+  // Hide spinner after processing
+  hideSpinner();
 };
 
+showSpinner()
 window.addEventListener("load", isAdmin_navbar);
+hideSpinner()
 
-const handleLogout = () => {
-  showSpinner()
+const handleLogout = async () => {
+  // Show spinner when logging out
+  showSpinner();
+
   const token = localStorage.getItem("token");
 
   if (token) {
@@ -77,5 +89,7 @@ const handleLogout = () => {
   } else {
     console.log("User not logged in");
   }
-  hideSpinner()
+
+  // Hide spinner after processing
+  hideSpinner();
 };

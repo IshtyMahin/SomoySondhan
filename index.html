@@ -14,6 +14,12 @@
       href="https://cdn.jsdelivr.net/npm/flowbite@3.2.1/dist/flowbite.min.css"
       rel="stylesheet"
     />
+    <style>
+      .admin-item,
+      .profile-item {
+        display: none;
+      }
+    </style>
   </head>
 
   <body class="bg-gray-100">
@@ -21,15 +27,13 @@
       <div class="container mx-auto flex items-center justify-between py-4">
         <a href="/" class="navbar-brand">SOMOY SONDHAN</a>
         <div class="flex items-center space-x-4">
-
           <a href="login.html" class="navbar-item">Login</a>
           <a href="registration.html" class="navbar-item">Register</a>
-          
-         
+
           <a href="addArticle.html" class="admin-item">Add Article</a>
           <a href="addCategory.html" class="admin-item">Add Category</a>
           <a href="profile.html" class="profile-item">Profile</a>
-          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+          <a onclick="handleLogout()" href="/" class="profile-item">Logout</a>
         </div>
       </div>
     </nav>
@@ -44,27 +48,32 @@
       <hr class="my-2 border-gray-700" />
     </div>
 
-    <div id="loading-spinner" class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-  <div class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"></div>
-</div>
+    <div
+      id="loading-spinner"
+      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
+      ></div>
+    </div>
 
     <!-- Content -->
     <section id="news-section" class="container mx-auto py-8"></section>
 
- 
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/dist/jwt-decode.min.js"></script>
     <script>
       const homeElements = document.getElementsByClassName("home");
-    
-    for (let i = 0; i < homeElements.length; i++) {
+
+      for (let i = 0; i < homeElements.length; i++) {
         homeElements[i].addEventListener("click", function (event) {
-            event.preventDefault();
-            window.location.href = window.location.origin + window.location.pathname;
+          event.preventDefault();
+          window.location.href =
+            window.location.origin + window.location.pathname;
         });
-    }
+      }
     </script>
- 
-<script src="/snippet.js"></script>
+
+    <script src="/snippet.js"></script>
     <script src="article.js"></script>
     <script src="navbar.js"></script>
   </body>

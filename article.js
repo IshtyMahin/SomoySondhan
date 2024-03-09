@@ -65,8 +65,10 @@ const generateCategoryLinks = async () => {
 };
 
 window.addEventListener("load", async () => {
+  showSpinner()
   await isAdmin();
   generateCategoryLinks();
+  hideSpinner();
 });
 const getWords = (body, n) => {
   const Words = body.slice(0, n);
