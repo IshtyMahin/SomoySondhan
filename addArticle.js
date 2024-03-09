@@ -1,6 +1,6 @@
 async function fetchCategories() {
   try {
-    const response = await fetch("http://127.0.0.1:8000/article/categories/");
+    const response = await fetch("https://somoysondhan-backend.onrender.com/article/categories/");
     const categories = await response.json();
     return categories;
   } catch (error) {
@@ -34,7 +34,7 @@ async function handleSubmit(event) {
     body,
     categories,
   };
-  fetch("http://127.0.0.1:8000/article/list/", {
+  fetch("https://somoysondhan-backend.onrender.com/article/list/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +56,7 @@ async function handleCategorySubmit(event) {
   const formData = {
     name:category
   };
-  fetch("http://127.0.0.1:8000/article/categories/", {
+  fetch("https://somoysondhan-backend.onrender.com/article/categories/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

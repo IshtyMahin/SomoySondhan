@@ -1,6 +1,6 @@
 async function fetchCategories() {
   try {
-    const response = await fetch("http://127.0.0.1:8000/article/categories/");
+    const response = await fetch("https://somoysondhan-backend.onrender.com/article/categories/");
     const data = await response.json();
     return data;
   } catch (error) {
@@ -13,7 +13,7 @@ function isAdmin() {
   const userId = localStorage.getItem("user_id");
 
   if (token) {
-    return fetch(`http://127.0.0.1:8000/user/${userId}/is_superuser/`, {
+    return fetch(`https://somoysondhan-backend.onrender.com/user/${userId}/is_superuser/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log(categoryName);
   const NewsContainer = document.getElementById("news-section");
   if (categoryName === null) {
-    fetch("http://127.0.0.1:8000/article/categories/")
+    fetch("https://somoysondhan-backend.onrender.com/article/categories/")
       .then((response) => response.json())
       .then((categories) => {
         let sectionPromise = Promise.resolve();
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
           sectionPromise = sectionPromise.then(() => {
             return new Promise((resolve) => {
               fetch(
-                `http://127.0.0.1:8000/article/list/?category=${category.name.toLowerCase()}`
+                `https://somoysondhan-backend.onrender.com/article/list/?category=${category.name.toLowerCase()}`
               )
                 .then((response) => response.json())
                 .then((articles) => {
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("user_id");
     if (token && userId) {
-      fetch(`http://127.0.0.1:8000/article/list/?category=${categoryName}`)
+      fetch(`https://somoysondhan-backend.onrender.com/article/list/?category=${categoryName}`)
         .then((response) => response.json())
         .then((articles) => {
           articles.sort((a, b) => b.average_rating - a.average_rating);
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function deleteArticle(articleId) {
-  fetch(`http://127.0.0.1:8000/article/list/${articleId}/`, {
+  fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/`, {
     method: "DELETE",
   })
     .then((response) => {

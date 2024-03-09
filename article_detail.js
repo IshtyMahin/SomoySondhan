@@ -9,7 +9,7 @@ const loadarticleDetails = () => {
   const articleId = getQueryParam("id");
   console.log(articleId);
 
-  fetch(`http://127.0.0.1:8000/article/list/${articleId}/`)
+  fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/`)
     .then((res) => res.json())
     .then((data) => {
       const publishing_time = new Date(data.publishing_time).toLocaleString(
@@ -50,7 +50,7 @@ const loadarticleDetails = () => {
 const fetchArticle = async () => {
   const articleId = getQueryParam("id");
   const response = await fetch(
-    `http://127.0.0.1:8000/article/list/${articleId}/`
+    `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`
   );
   const data = await response.json();
   return data;
@@ -164,7 +164,7 @@ function handleReviewSubmission(event) {
     article: articleId,
     user: userId,
   };
-  fetch(`http://127.0.0.1:8000/article/${articleId}/reviews/`, {
+  fetch(`https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -190,7 +190,7 @@ function handleReviewSubmission(event) {
 }
 
 const reviewFetch = (articleId) => {
-  fetch(`http://127.0.0.1:8000/article/${articleId}/reviews/`)
+  fetch(`https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`)
     .then((response) => response.json())
     .then((reviews) => {
       loadReview(reviews);
@@ -206,7 +206,7 @@ const loadReview = async (data) => {
   commentContainer.innerHTML = "";
 
   const fetchUsername = async (userId) => {
-    const response = await fetch(`http://127.0.0.1:8000/user/list/${userId}/`);
+    const response = await fetch(`https://somoysondhan-backend.onrender.com/user/list/${userId}/`);
     const userData = await response.json();
     return userData.username;
   };
@@ -283,7 +283,7 @@ function getWords(body, n) {
 }
 const relatedArticle = () => {
   const articleId = getQueryParam("id");
-  fetch(`http://127.0.0.1:8000/article/list/${articleId}/related/`)
+  fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/related/`)
     .then((res) => res.json())
 
     .then((data) => {

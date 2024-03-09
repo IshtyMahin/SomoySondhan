@@ -16,7 +16,7 @@ const handleRegistration = (event) => {
   };
 
   console.log(info);
-  fetch("http://127.0.0.1:8000/user/register/", {
+  fetch("https://somoysondhan-backend.onrender.com/user/register/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const handleLogin = (event) => {
   const username = getValue("login-username");
   const password = getValue("login-password");
   console.log(username, password);
-  fetch("http://127.0.0.1:8000/user/login/", {
+  fetch("https://somoysondhan-backend.onrender.com/user/login/", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ username, password }),

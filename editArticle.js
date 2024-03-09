@@ -2,38 +2,40 @@ const getQueryParam = (name) => {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
 };
+
 const articleId = getQueryParam("id");
-async function fetchCategories() {
+
+const fetchCategories = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:8000/article/categories/");
+    const response = await fetch("https://somoysondhan-backend.onrender.com/article/categories/");
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching categories:", error);
   }
-}
+};
 
-async function fetchArticleDetails() {
+const fetchArticleDetails = async () => {
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/article/list/${articleId}/`
+      `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`
     );
     const article = await response.json();
     return article;
   } catch (error) {
     console.error("Error fetching article details:", error);
   }
-}
+};
 
-async function EditForm() {
+const EditForm = async () => {
   const article = await fetchArticleDetails();
   document.getElementById("headline").value = article.headline;
   document.getElementById("body").value = article.body;
 
-  const categoriesSelect = document.getElementById("categories");
-  const allCategories = await fetchCategories();
+  const selectedCategory = document.getElementById("categories");
+  const categories = await fetchCategories();
 
-  allCategories.forEach((category) => {
+  categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category.id;
     option.textContent = category.name;
@@ -42,38 +44,41 @@ async function EditForm() {
       option.selected = true;
     }
 
-    categoriesSelect.appendChild(option);
+    selectedCategory.appendChild(option);
   });
-}
+};
 
-async function handleEditSubmit(event) {
+const handleEditSubmit = (event) => {
   event.preventDefault();
   const headline = document.getElementById("headline").value;
   const body = document.getElementById("body").value;
-  const categoriesSelect = document.getElementById("categories");
-  const categories = Array.from(categoriesSelect.selectedOptions).map(
+  const selectedCategory = document.getElementById("categories");
+  const categories = Array.from(selectedCategory.selectedOptions).map(
     (option) => option.textContent
   );
 
-  const formData = {
+  const data = {
     headline,
     body,
     categories,
   };
 
-  fetch(`http://127.0.0.1:8000/article/list/${articleId}/`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
+  fetch(
+    `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       window.location.href = `article_detail.html?id=${articleId}`;
     });
-}
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   EditForm();
