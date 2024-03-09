@@ -50,6 +50,7 @@
 
     <script>
         const userId = localStorage.getItem("user_id");
+        console.log(userId);
         fetch(`https://somoysondhan-backend.onrender.com/user/list/${userId}/`)
             .then(response => response.json())
             .then(user => {
