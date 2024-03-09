@@ -188,7 +188,7 @@ const handleReviewSubmission = async (event) => {
     .then((data) => {
       console.log(data);
       renderRating();
-      reviewFetch();
+      reviewFetch(articleId);
       console.log("Submit review");
       hideSpinner()
     })
@@ -335,7 +335,7 @@ if (token && userId) {
   showSpinner();
   loadarticleDetails();
   // loadReview();
-  reviewFetch();
+  reviewFetch(articleId);
 
   hideSpinner();
 } else {
