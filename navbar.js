@@ -1,5 +1,8 @@
 
 
+window.addEventListener("load", isAdmin);
+console.log(admin);
+
 const checkLoggedIn = () => {
   const token = localStorage.getItem("token");
   console.log(token);
@@ -31,7 +34,6 @@ const checkLoggedIn = () => {
   }
 };
 
-window.addEventListener("load", generateCategoryLinks, isAdmin);
 
 const handleLogout = () => {
   const token = localStorage.getItem("token");
