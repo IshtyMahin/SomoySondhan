@@ -187,7 +187,8 @@ const handleReviewSubmission = async (event) => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-
+      renderRating();
+      loadReview();
       console.log("Submit review");
       hideSpinner()
     })
