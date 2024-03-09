@@ -188,7 +188,7 @@ const handleReviewSubmission = async (event) => {
     .then((data) => {
       console.log(data);
       renderRating();
-      loadReview();
+      reviewFetch();
       console.log("Submit review");
       hideSpinner()
     })
@@ -218,9 +218,10 @@ const loadReview = async (data) => {
   let commentContainer = document.getElementById("commentContainer");
   // console.log(commentContainer);
   commentContainer.innerHTML = "";
+  showSpinner();
   const fetchUsername = async (userId) => {
+    
     showSpinner();
-
     const response = await fetch(
       `https://somoysondhan-backend.onrender.com/user/list/${userId}/`
     );
@@ -291,6 +292,7 @@ const loadReview = async (data) => {
   `;
     commentContainer.appendChild(noReviewMessage);
   }
+  hideSpinner()
 };
 
 function getWords(body, n) {
@@ -332,7 +334,9 @@ relatedArticle();
 if (token && userId) {
   showSpinner();
   loadarticleDetails();
-  loadReview();
+  // loadReview();
+  reviewFetch();
+
   hideSpinner();
 } else {
   window.location.href = "login.html";
