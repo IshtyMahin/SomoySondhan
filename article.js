@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log(categoryName);
   const NewsContainer = document.getElementById("news-section");
   if (categoryName === null) {
+    showSpinner()
     fetch("https://somoysondhan-backend.onrender.com/article/categories/")
       .then((response) => response.json())
       .then((categories) => {
@@ -149,10 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       })
       .catch((error) => console.error("Error fetching categories:", error));
+    hideSpinner();
   } else {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("user_id");
     if (token && userId) {
+      showSpinner()
       fetch(
         `https://somoysondhan-backend.onrender.com/article/list/?category=${categoryName}`
       )
@@ -207,7 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
             `Error fetching articles for category ${categoryName}:`,
             error
           )
-        );
+      );
+      hideSpinner();
     } else {
       window.location.href = "login.html";
     }
