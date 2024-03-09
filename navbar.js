@@ -1,4 +1,6 @@
-function isAdmin() {
+
+let admin = false;
+const isAdmin = async () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
@@ -16,18 +18,15 @@ function isAdmin() {
       .then((userData) => {
         if (userData) {
           // console.log(userData);
-          return userData.is_superuser;
+
+          admin = userData.is_superuser;
         }
-        return false;
       })
       .catch((error) => {
         console.error("Error fetching user information:", error);
-        return false;
       });
-  } else {
-    return false;
   }
-}
+};
 
 const checkLoggedIn = () => {
   const token = localStorage.getItem("token");
@@ -62,7 +61,8 @@ const checkLoggedIn = () => {
   }
 };
 
-window.addEventListener("load", checkLoggedIn);
+
+window.addEventListener("load", generateCategoryLinks, isAdmin);
 
 const handleLogout = () => {
   const token = localStorage.getItem("token");
@@ -75,3 +75,5 @@ const handleLogout = () => {
     console.log("User not logged in");
   }
 };
+
+
