@@ -36,6 +36,7 @@ function isAdmin() {
       });
   }
 }
+isAdmin();
 
 async function generateCategoryLinks() {
   const categories = await fetchCategories();
@@ -54,7 +55,7 @@ async function generateCategoryLinks() {
     categoryLinksContainer.appendChild(categoryLink);
   });
 }
-isAdmin();
+
 window.addEventListener("load", generateCategoryLinks);
 
 function getWords(body, n) {
