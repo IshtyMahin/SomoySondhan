@@ -46,7 +46,7 @@ const handleSubmit = async (event) => {
     .then((res) => res.json())
     .then((data) => {
       // console.log(data);
-      // window.location.href = "index.html";
+      window.location.href = "/";
     });
 };
 
@@ -67,7 +67,7 @@ const handleCategorySubmit = async (event) => {
     .then((res) => res.json())
     .then((data) => {
       // console.log(data);
-      window.location.href = "";
+      window.location.href = "/";
     });
 };
 
