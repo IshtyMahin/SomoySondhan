@@ -1,31 +1,4 @@
-let is_admin = false;
-const isAdmin = async () => {
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user_id");
 
-  if (token) {
-    return fetch(
-      `https://somoysondhan-backend.onrender.com/user/${userId}/is_superuser/`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((userData) => {
-        if (userData) {
-          // console.log(userData);
-
-          is_admin = userData.is_superuser;
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching user information:", error);
-      });
-  }
-};
 
 const checkLoggedIn = () => {
   const token = localStorage.getItem("token");
@@ -40,7 +13,7 @@ const checkLoggedIn = () => {
     document.querySelectorAll(".admin-item").forEach((item) => {
       item.style.display = "none";
     });
-    if (is_admin) {
+    if (admin) {
       document.querySelectorAll(".admin-item").forEach((item) => {
         item.style.display = "inline-block";
       });
