@@ -151,45 +151,47 @@ const renderRating = async () => {
   ratingSection.appendChild(averageRatingElement);
 };
 
-const handleReviewSubmission=(event)=> {
+const handleReviewSubmission = async (event) => {
   event.preventDefault();
 
   const rating = document.getElementById("rating").value;
   const review = document.getElementById("review").value;
   const articleId = getQueryParam("id");
-
+     document.getElementById("rating").value = "";
+     document.getElementById("review").value = "";
   const reviewData = {
     rating: rating,
     comment: review,
     article: articleId,
     user: userId,
   };
-  fetch(`https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(reviewData),
-  })
+  console.log(reviewData);
+  fetch(
+    `https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reviewData),
+    }
+  )
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
- 
-      document.getElementById("rating").value = "";
-      document.getElementById("review").value = "";
- 
-      reviewFetch(articleId);
-      renderRating();
+      console.log(data);
 
-      // console.log("Submit request");
+      console.log("Submit review");
     })
     .catch((error) => {
       console.error("Error submitting review:", error);
+      location.reload();
     });
-}
+};
 
 const reviewFetch = (articleId) => {
-  fetch(`https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`)
+  fetch(
+    `https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`
+  )
     .then((response) => response.json())
     .then((reviews) => {
       loadReview(reviews);
@@ -205,7 +207,9 @@ const loadReview = async (data) => {
   commentContainer.innerHTML = "";
 
   const fetchUsername = async (userId) => {
-    const response = await fetch(`https://somoysondhan-backend.onrender.com/user/list/${userId}/`);
+    const response = await fetch(
+      `https://somoysondhan-backend.onrender.com/user/list/${userId}/`
+    );
     const userData = await response.json();
     return userData.username;
   };
@@ -282,7 +286,9 @@ function getWords(body, n) {
 }
 const relatedArticle = () => {
   const articleId = getQueryParam("id");
-  fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/related/`)
+  fetch(
+    `https://somoysondhan-backend.onrender.com/article/list/${articleId}/related/`
+  )
     .then((res) => res.json())
 
     .then((data) => {
@@ -304,9 +310,11 @@ const relatedArticle = () => {
     });
 };
 
-relatedArticle()
+relatedArticle();
+
 if (token && userId) {
   loadarticleDetails();
+  loadReview()
 } else {
   window.location.href = "login.html";
 }
