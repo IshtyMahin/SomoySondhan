@@ -50,9 +50,7 @@ const generateCategoryLinks= async ()=> {
     categoryLink.href = `?category=${category.name.toLowerCase()}`;
     categoryLink.classList.add("mr-4", "text-gray-800");
     categoryLink.textContent = category.name;
-
-    categoryLinksContainer.appendChild(categoryLink);
-
+    
     categoryLinksContainer.appendChild(categoryLink);
   });
 }

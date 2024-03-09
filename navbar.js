@@ -36,7 +36,7 @@ const checkLoggedIn = () => {
 
 
 window.addEventListener("load", checkLoggedIn);
-console.log(admin);
+
 
 const handleLogout = () => {
   const token = localStorage.getItem("token");
