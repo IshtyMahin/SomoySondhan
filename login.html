@@ -14,11 +14,9 @@
       <div class="container mx-auto flex items-center justify-between py-4">
         <a href="\" class="navbar-brand">SOMOY SONDHAN</a>
         <div class="flex items-center space-x-4">
-
           <a href="login.html" class="navbar-item">Login</a>
           <a href="registration.html" class="navbar-item">Register</a>
-          
-         
+
           <a href="addArticle.html" class="admin-item">Add Article</a>
           <a href="addCategory.html" class="admin-item">Add Category</a>
           <a href="profile.html" class="profile-item">Profile</a>
@@ -51,14 +49,12 @@
           <div id="login-error" class="text-2xl text-red-500 pb-4"></div>
           <div class="flex items-center justify-between">
             <button
-              onclick='handleLogin(event)' 
-              
+              onclick="handleLogin(event)"
               type="submit"
               class="px-4 py-2 bg-gray-800 text-white rounded-md"
             >
               Sign In
             </button>
-            
           </div>
         </form>
         <p class="mt-4 text-center text-gray-600">
@@ -69,8 +65,18 @@
         </p>
       </div>
     </div>
+
+    <div
+      id="loading-spinner"
+      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
+      ></div>
+    </div>
+
+    <script src="/snippet.js"></script>
     <script src="/auth.js"></script>
     <script src="/navbar.js"></script>
-    <script src="article.js"></script>
   </body>
 </html>

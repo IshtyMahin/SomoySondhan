@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
     <nav class="navbar bg-gray-800 text-white">
       <div class="container mx-auto flex items-center justify-between py-4">
         <a href="\" class="navbar-brand">SOMOY SONDHAN</a>
         <div class="flex items-center space-x-4">
-
           <a href="login.html" class="navbar-item">Login</a>
           <a href="registration.html" class="navbar-item">Register</a>
-          
-         
+
           <a href="addArticle.html" class="admin-item">Add Article</a>
           <a href="addCategory.html" class="admin-item">Add Category</a>
           <a href="profile.html" class="profile-item">Profile</a>
@@ -23,46 +24,72 @@
         </div>
       </div>
     </nav>
-    
-    <div class="container mx-auto py-8">
-        <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold mb-4">User Profile</h1>
-                <div class="flex">
-                    <label class="w-1/4 block text-gray-700 font-bold mb-2 pr-6" for="username">Username:</label>
-                    <p id="username" class="text-gray-900 font-medium"></p>
-                </div>
-                <div class="mt-4 flex">
-                    <label class="w-1/4 block text-gray-700 font-bold mb-2" for="firstName">First Name:</label>
-                    <p id="firstName" class="text-gray-900 font-medium"></p>
-                </div>
-                <div class="mt-4 flex">
-                    <label class="w-1/4 block text-gray-700 font-bold mb-2" for="lastName">Last Name:</label>
-                    <p id="lastName" class="text-gray-900 font-medium"></p>
-                </div>
-                <div class="mt-4 flex">
-                    <label class="w-1/4 block text-gray-700 font-bold mb-2" for="email">Email:</label>
-                    <p id="email" class="text-gray-900 font-medium"></p>
-                </div>
-            </div>
-        </div>
-    </div>
 
+    <div class="container mx-auto py-8">
+      <div
+        class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden"
+      >
+        <div class="p-6">
+          <h1 class="text-2xl font-bold mb-4">User Profile</h1>
+          <div class="flex">
+            <label
+              class="w-1/4 block text-gray-700 font-bold mb-2 pr-6"
+              for="username"
+              >Username:</label
+            >
+            <p id="username" class="text-gray-900 font-medium"></p>
+          </div>
+          <div class="mt-4 flex">
+            <label
+              class="w-1/4 block text-gray-700 font-bold mb-2"
+              for="firstName"
+              >First Name:</label
+            >
+            <p id="firstName" class="text-gray-900 font-medium"></p>
+          </div>
+          <div class="mt-4 flex">
+            <label
+              class="w-1/4 block text-gray-700 font-bold mb-2"
+              for="lastName"
+              >Last Name:</label
+            >
+            <p id="lastName" class="text-gray-900 font-medium"></p>
+          </div>
+          <div class="mt-4 flex">
+            <label class="w-1/4 block text-gray-700 font-bold mb-2" for="email"
+              >Email:</label
+            >
+            <p id="email" class="text-gray-900 font-medium"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="loading-spinner"
+      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
+      ></div>
+    </div>
+    <script src="/snippet.js"></script>
     <script>
-        const userId = localStorage.getItem("user_id");
-        console.log(userId);
-        fetch(`https://somoysondhan-backend.onrender.com/user/list/${userId}/`)
-            .then(response => response.json())
-            .then(user => {
-                document.getElementById('username').textContent = user.username;
-                document.getElementById('firstName').textContent = user.first_name;
-                document.getElementById('lastName').textContent = user.last_name;
-                document.getElementById('email').textContent = user.email;
-            })
-            .catch(error => console.error('Error fetching user data:', error));
+      const userId = localStorage.getItem("user_id");
+      console.log(userId);
+      showSpinner();
+      fetch(`https://somoysondhan-backend.onrender.com/user/list/${userId}/`)
+        .then((response) => response.json())
+        .then((user) => {
+          document.getElementById("username").textContent = user.username;
+          document.getElementById("firstName").textContent = user.first_name;
+          document.getElementById("lastName").textContent = user.last_name;
+          document.getElementById("email").textContent = user.email;
+          hideSpinner();
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
     </script>
+
     <script src="/auth.js"></script>
     <script src="/navbar.js"></script>
-    <script src="article.js"></script>
-</body>
+  </body>
 </html>

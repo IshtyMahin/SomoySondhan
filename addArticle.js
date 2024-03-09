@@ -1,19 +1,23 @@
 const fetchCategories = async () => {
   try {
+    showSpinner()
     const response = await fetch(
       "https://somoysondhan-backend.onrender.com/article/categories/"
     );
     const categories = await response.json();
+    hideSpinner()
     return categories;
   } catch (error) {
+    showSpinner()
     console.error("Error fetching categories:", error);
   }
 };
 
 const CategoriesSelect = async () => {
   const categoriesSelect = document.getElementById("categories");
+  showSpinner()
   const categories = await fetchCategories();
-
+  hideSpinner()
   categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category.id;
@@ -36,6 +40,7 @@ const handleSubmit = async (event) => {
     body,
     categories,
   };
+  showSpinner()
   fetch("https://somoysondhan-backend.onrender.com/article/list/", {
     method: "POST",
     headers: {
@@ -47,6 +52,7 @@ const handleSubmit = async (event) => {
     .then((data) => {
       // console.log(data);
       window.location.href = "/";
+      hideSpinner()
     });
 };
 
@@ -57,6 +63,7 @@ const handleCategorySubmit = async (event) => {
   const formData = {
     name: category,
   };
+  showSpinner()
   fetch("https://somoysondhan-backend.onrender.com/article/categories/", {
     method: "POST",
     headers: {
@@ -68,6 +75,7 @@ const handleCategorySubmit = async (event) => {
     .then((data) => {
       // console.log(data);
       window.location.href = "/";
+      hideSpinner()
     });
 };
 

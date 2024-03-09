@@ -8,19 +8,19 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.css"
+    />
   </head>
   <body class="bg-gray-100">
-
     <nav class="navbar bg-gray-800 text-white">
       <div class="container mx-auto flex items-center justify-between py-4">
         <a href="" class="navbar-brand">SOMOY SONDHAN</a>
         <div class="flex items-center space-x-4">
-
           <a href="login.html" class="navbar-item">Login</a>
           <a href="registration.html" class="navbar-item">Register</a>
-          
-         
+
           <a href="addArticle.html" class="admin-item">Add Article</a>
           <a href="addCategory.html" class="admin-item">Add Category</a>
           <a href="profile.html" class="profile-item">Profile</a>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </nav>
-    
+
     <div class="min-h-screen flex items-center justify-center">
       <div id="register" class="bg-white p-8 rounded shadow-md max-w-md w-full">
         <h1 class="text-3xl font-semibold mb-4">Please Register</h1>
@@ -84,17 +84,22 @@
         <div id="login-error" class="text-2xl text-red-500 pb-4"></div>
         <p class="mt-4 text-center text-gray-600">
           Already have an account?
-          <a href="login.html" class="text-blue-800 hover:underline"
-            >Login</a
-          >
+          <a href="login.html" class="text-blue-800 hover:underline">Login</a>
         </p>
       </div>
     </div>
+    <div
+      id="loading-spinner"
+      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
+      ></div>
+    </div>
+    <script src="/snippet.js"></script>
     <script src="/auth.js"></script>
     <script src="/navbar.js"></script>
-    <script src="article.js"></script>
- 
-    
-<script src="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.js"></script>
   </body>
 </html>

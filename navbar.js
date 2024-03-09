@@ -1,9 +1,38 @@
+let admin_navbar = false;
 
+const isAdmin_navbar = async () => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("user_id");
+  
+  showSpinner()
+  if (token) {
 
-
-
+    return fetch(
+      `https://somoysondhan-backend.onrender.com/user/${userId}/is_superuser/`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((userData) => {
+        if (userData) {
+          admin_navbar = userData.is_superuser;
+          // Call checkLoggedIn() after updating admin_navbar
+          checkLoggedIn();
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user information:", error);
+      });
+  }
+  hideSpinner()
+};
 
 const checkLoggedIn = () => {
+  showSpinner()
   const token = localStorage.getItem("token");
   console.log(token);
   if (token) {
@@ -16,7 +45,7 @@ const checkLoggedIn = () => {
     document.querySelectorAll(".admin-item").forEach((item) => {
       item.style.display = "none";
     });
-    if (admin) {
+    if (admin_navbar) {
       document.querySelectorAll(".admin-item").forEach((item) => {
         item.style.display = "inline-block";
       });
@@ -32,13 +61,13 @@ const checkLoggedIn = () => {
       item.style.display = "none";
     });
   }
+  hideSpinner()
 };
 
-
-window.addEventListener("load", checkLoggedIn);
-
+window.addEventListener("load", isAdmin_navbar);
 
 const handleLogout = () => {
+  showSpinner()
   const token = localStorage.getItem("token");
 
   if (token) {
@@ -48,4 +77,5 @@ const handleLogout = () => {
   } else {
     console.log("User not logged in");
   }
+  hideSpinner()
 };

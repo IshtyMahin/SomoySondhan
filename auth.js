@@ -16,6 +16,7 @@ const handleRegistration = (event) => {
   };
 
   console.log(info);
+  showSpinner()
   fetch("https://somoysondhan-backend.onrender.com/user/register/", {
     method: "POST",
     headers: {
@@ -42,6 +43,7 @@ const handleRegistration = (event) => {
         element.classList.add("text-green-500");
   
       }
+      hideSpinner()
     })
 };
 const getValue = (id) => {
@@ -54,6 +56,7 @@ const handleLogin = (event) => {
   const username = getValue("login-username");
   const password = getValue("login-password");
   // console.log(username, password);
+  showSpinner()
   fetch("https://somoysondhan-backend.onrender.com/user/login/", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -70,6 +73,7 @@ const handleLogin = (event) => {
         // console.log(data);
         document.getElementById("login-error").textContent = data.error;
       }
+      hideSpinner()
     })
     .catch((error) => {
       document.getElementById("login-error").textContent = error.message;

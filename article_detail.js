@@ -8,7 +8,7 @@ const getQueryParam = (name) => {
 const loadarticleDetails = () => {
   const articleId = getQueryParam("id");
   // console.log(articleId);
-
+  showSpinner();
   fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/`)
     .then((res) => res.json())
     .then((data) => {
@@ -37,29 +37,35 @@ const loadarticleDetails = () => {
     
       
      `;
+      hideSpinner();
     })
     .catch((error) => {
       console.error("Error loading article details:", error);
     })
     .then(() => {
+      showSpinner();
       reviewFetch(articleId);
       renderRating();
+      hideSpinner();
     });
 };
 
 const fetchArticle = async () => {
   const articleId = getQueryParam("id");
+  showSpinner()
   const response = await fetch(
     `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`
   );
   const data = await response.json();
+  hideSpinner()
   return data;
 };
 
 const renderRating = async () => {
   const ratingSection = document.getElementById("ratingSection");
   ratingSection.innerHTML = "";
-
+  
+  showSpinner()
   const data = await fetchArticle();
   // Render average rating
   const averageRatingElement = document.createElement("div");
@@ -149,6 +155,7 @@ const renderRating = async () => {
    
   `;
   ratingSection.appendChild(averageRatingElement);
+  hideSpinner();
 };
 
 const handleReviewSubmission = async (event) => {
@@ -157,8 +164,8 @@ const handleReviewSubmission = async (event) => {
   const rating = document.getElementById("rating").value;
   const review = document.getElementById("review").value;
   const articleId = getQueryParam("id");
-     document.getElementById("rating").value = "";
-     document.getElementById("review").value = "";
+  document.getElementById("rating").value = "";
+  document.getElementById("review").value = "";
   const reviewData = {
     rating: rating,
     comment: review,
@@ -166,6 +173,7 @@ const handleReviewSubmission = async (event) => {
     user: userId,
   };
   console.log(reviewData);
+  showSpinner()
   fetch(
     `https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`,
     {
@@ -181,20 +189,24 @@ const handleReviewSubmission = async (event) => {
       console.log(data);
 
       console.log("Submit review");
+      hideSpinner()
     })
     .catch((error) => {
       console.error("Error submitting review:", error);
       location.reload();
+      hideSpinner()
     });
 };
 
 const reviewFetch = (articleId) => {
+  showSpinner();
   fetch(
     `https://somoysondhan-backend.onrender.com/article/${articleId}/reviews/`
   )
     .then((response) => response.json())
     .then((reviews) => {
       loadReview(reviews);
+      hideSpinner();
     })
     .catch((error) => {
       console.error("Error loading reviews:", error);
@@ -205,12 +217,14 @@ const loadReview = async (data) => {
   let commentContainer = document.getElementById("commentContainer");
   // console.log(commentContainer);
   commentContainer.innerHTML = "";
-
   const fetchUsername = async (userId) => {
+    showSpinner();
+
     const response = await fetch(
       `https://somoysondhan-backend.onrender.com/user/list/${userId}/`
     );
     const userData = await response.json();
+    hideSpinner();
     return userData.username;
   };
 
@@ -286,6 +300,7 @@ function getWords(body, n) {
 }
 const relatedArticle = () => {
   const articleId = getQueryParam("id");
+  showSpinner();
   fetch(
     `https://somoysondhan-backend.onrender.com/article/list/${articleId}/related/`
   )
@@ -307,14 +322,17 @@ const relatedArticle = () => {
            .join("")}
         `;
       }
+      hideSpinner();
     });
 };
 
 relatedArticle();
 
 if (token && userId) {
+  showSpinner();
   loadarticleDetails();
-  loadReview()
+  loadReview();
+  hideSpinner();
 } else {
   window.location.href = "login.html";
 }

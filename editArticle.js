@@ -1,3 +1,5 @@
+
+
 const getQueryParam = (name) => {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
@@ -7,27 +9,36 @@ const articleId = getQueryParam("id");
 
 const fetchCategories = async () => {
   try {
-    const response = await fetch("https://somoysondhan-backend.onrender.com/article/categories/");
+    showSpinner(); // Show spinner while fetching categories
+    const response = await fetch(
+      "https://somoysondhan-backend.onrender.com/article/categories/"
+    );
     const data = await response.json();
+    hideSpinner(); // Hide spinner after fetching categories
     return data;
   } catch (error) {
+    hideSpinner(); // Hide spinner if an error occurs
     console.error("Error fetching categories:", error);
   }
 };
 
 const fetchArticleDetails = async () => {
   try {
+    showSpinner(); // Show spinner while fetching article details
     const response = await fetch(
       `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`
     );
     const article = await response.json();
+    hideSpinner(); // Hide spinner after fetching article details
     return article;
   } catch (error) {
+    hideSpinner(); // Hide spinner if an error occurs
     console.error("Error fetching article details:", error);
   }
 };
 
 const EditForm = async () => {
+  showSpinner(); // Show spinner while loading edit form
   const article = await fetchArticleDetails();
   document.getElementById("headline").value = article.headline;
   document.getElementById("body").value = article.body;
@@ -46,6 +57,8 @@ const EditForm = async () => {
 
     selectedCategory.appendChild(option);
   });
+
+  hideSpinner(); // Hide spinner after loading edit form
 };
 
 const handleEditSubmit = (event) => {
@@ -63,6 +76,8 @@ const handleEditSubmit = (event) => {
     categories,
   };
 
+  showSpinner(); // Show spinner while submitting edit form
+
   fetch(
     `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`,
     {
@@ -75,6 +90,7 @@ const handleEditSubmit = (event) => {
   )
     .then((res) => res.json())
     .then((data) => {
+      hideSpinner(); // Hide spinner after submitting edit form
       // console.log(data);
       window.location.href = `article_detail.html?id=${articleId}`;
     });
