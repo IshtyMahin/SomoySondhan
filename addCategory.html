@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Category</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+  />
+  <!-- Include any other CSS files if needed -->
+</head>
+<body class="bg-gray-100">
+  <nav class="navbar bg-gray-800 text-white">
+      <div class="container mx-auto flex items-center justify-between py-4">
+        <a href="index.html" class="navbar-brand">SOMOY SONDHAN</a>
+        <div class="flex items-center space-x-4">
+
+          <a href="login.html" class="navbar-item">Login</a>
+          <a href="registration.html" class="navbar-item">Register</a>
+          
+         
+          <a href="addArticle.html" class="admin-item">Add Article</a>
+          <a href="addCategory.html" class="admin-item">Add Category</a>
+          <a href="profile.html" class="profile-item">Profile</a>
+          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+        </div>
+      </div>
+    </nav>
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="container bg-white p-8 rounded shadow-md w-full">
+      <h1 class="text-3xl text-center font-semibold mb-4">Add Category</h1>
+      <form id="add-article-form" onsubmit="handleCategorySubmit(event)">
+        <input type="text" id="category" placeholder="Category" class="w-full px-4 py-2 mb-4 rounded border" required>
+        
+        <input type="submit" class="submit-btn w-full px-4 py-2 bg-gray-800 text-white rounded" value="Add Article">
+      </form>
+      <p class="mt-4 text-center text-gray-600">
+        Go back to <a href="index.html" class="text-blue-800 hover:underline">Home</a>.
+      </p>
+    </div>
+  </div>
+  <script src="/auth.js"></script>
+  <script src="/navbar.js"></script>
+  <script src="/addArticle.js"></script>
+</body>
+</html>

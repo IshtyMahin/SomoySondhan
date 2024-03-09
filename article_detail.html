@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article Detail</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <nav class="navbar bg-gray-800 text-white">
+      <div class="container mx-auto flex items-center justify-between py-4">
+        <a href="index.html" class="navbar-brand">SOMOY SONDHAN</a>
+        <div class="flex items-center space-x-4">
+
+          <a href="login.html" class="navbar-item">Login</a>
+          <a href="registration.html" class="navbar-item">Register</a>
+          
+         
+          <a href="addArticle.html" class="admin-item">Add Article</a>
+          <a href="addCategory.html" class="admin-item">Add Category</a>
+          <a href="profile.html" class="profile-item">Profile</a>
+          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <section class="py-6">
+      <div id="detail_article" class="container mx-auto py-8"></div>
+      <div class="container mx-auto">
+        <div class="mb-4">
+          <h2 class="text-2xl font-semibold mb-2">Review Comments</h2>
+          <div
+            id="commentContainer"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          ></div>
+          <div class="flex py-6">
+            <div class="w-1/2 mr-4" id="ratingSection">
+              
+            </div>
+            <div class="w-1/2">
+              <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form action="" onsubmit="handleReviewSubmission(event)">
+                  <div class="mb-4">
+                    <label
+                      for="rating"
+                      class="block text-gray-700 font-bold mb-2"
+                      >Rating:</label
+                    >
+                    <select
+                      name="rating"
+                      id="rating"
+                      class="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="4">⭐️⭐️⭐️⭐️</option>
+                      <option value="3">⭐️⭐️⭐️</option>
+                      <option value="2">⭐️⭐️</option>
+                      <option value="1">⭐️</option>
+                    </select>
+                  </div>
+                  <div class="mb-4">
+                    <label
+                      for="review"
+                      class="block text-gray-700 font-bold mb-2"
+                      >Review:</label
+                    >
+                    <textarea
+                      name="review"
+                      id="review"
+                      rows="4"
+                      class="resize-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                    ></textarea>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <button
+                      type="submit"
+                      class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Related News</h2>
+          <div id="related_article">
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <script src="article_detail.js"></script>
+    <script src="/navbar.js"></script>
+  </body>
+</html>

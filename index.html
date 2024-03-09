@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Site</title>
+    <!-- Include Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Include Flowbite CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@3.2.1/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100">
+    <nav class="navbar bg-gray-800 text-white">
+      <div class="container mx-auto flex items-center justify-between py-4">
+        <a href="index.html" class="navbar-brand">SOMOY SONDHAN</a>
+        <div class="flex items-center space-x-4">
+
+          <a href="login.html" class="navbar-item">Login</a>
+          <a href="registration.html" class="navbar-item">Register</a>
+          
+         
+          <a href="addArticle.html" class="admin-item">Add Article</a>
+          <a href="addCategory.html" class="admin-item">Add Category</a>
+          <a href="profile.html" class="profile-item">Profile</a>
+          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <!-- Category Links -->
+    <div class="container mx-auto py-4">
+      <div class="hidden lg:block">
+        <div id="category-links" class="flex justify-center">
+          <a href="#" class="home mr-4 text-gray-800">All</a>
+        </div>
+      </div>
+      <hr class="my-2 border-gray-700" />
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden hidden bg-gray-800 text-white">
+      <div id="mobile-category-menu" class="container mx-auto py-4">
+        <a href="#" class="home block px-4 py-2 text-gray-200">All</a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <section id="news-section" class="container mx-auto py-8"></section>
+
+ 
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/dist/jwt-decode.min.js"></script>
+    <script>
+      const homeElements = document.getElementsByClassName("home");
+    
+    for (let i = 0; i < homeElements.length; i++) {
+        homeElements[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            window.location.href = window.location.origin + window.location.pathname;
+        });
+    }
+    </script>
+    <script src="article.js"></script>
+    <script src="navbar.js"></script>
+  </body>
+</html>

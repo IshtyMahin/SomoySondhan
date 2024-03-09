@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CKEditor 5 – Article Body</title>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+  </head>
+  <body>
+    <h1>Article Body Editor</h1>
+    <textarea id="editor">
+        <p>This is some sample content.</p>
+    </textarea>
+
+    <script>
+      ClassicEditor.create(document.querySelector("#editor"), {
+        ckfinder: {
+          uploadUrl: "http://localhost:8000/upload_image/",
+        },
+        web_accessible_resources: ["popup.js", "tat_popup.js"],
+      }).catch((error) => {
+        console.error(error);
+      });
+    </script>
+  </body>
+</html>
