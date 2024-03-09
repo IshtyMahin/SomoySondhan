@@ -50,7 +50,7 @@ const generateCategoryLinks = async () => {
   showSpinner();
   const categories = await fetchCategories();
   // console.log(categories);
-
+  
   const categoryLinksContainer = document.getElementById("category-links");
 
   categories.forEach((category) => {
@@ -75,12 +75,14 @@ const getWords = (body, n) => {
   return Words;
 };
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",async function () {
   const getQueryParam = (name) => {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
   };
-
+  showSpinner()
+  await isAdmin();
+  hideSpinner()
   const categoryName = getQueryParam("category");
   // console.log(categoryName);
   const NewsContainer = document.getElementById("news-section");
