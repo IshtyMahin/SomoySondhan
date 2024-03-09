@@ -1,9 +1,9 @@
 
 
-window.addEventListener("load", isAdmin);
-console.log(admin);
 
-const checkLoggedIn = () => {
+
+
+const checkLoggedIn =async () => {
   const token = localStorage.getItem("token");
   console.log(token);
   if (token) {
@@ -34,6 +34,9 @@ const checkLoggedIn = () => {
   }
 };
 
+
+window.addEventListener("load", isAdmin, checkLoggedIn);
+console.log(admin);
 
 const handleLogout = () => {
   const token = localStorage.getItem("token");
