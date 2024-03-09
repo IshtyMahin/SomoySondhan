@@ -35,7 +35,7 @@ const checkLoggedIn = () => {
 };
 
 
-window.addEventListener("load", isAdmin, checkLoggedIn);
+window.addEventListener("load", checkLoggedIn);
 console.log(admin);
 
 const handleLogout = () => {
