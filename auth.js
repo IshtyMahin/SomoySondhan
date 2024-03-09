@@ -53,7 +53,7 @@ const handleLogin = (event) => {
   event.preventDefault();
   const username = getValue("login-username");
   const password = getValue("login-password");
-  console.log(username, password);
+  // console.log(username, password);
   fetch("https://somoysondhan-backend.onrender.com/user/login/", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -61,13 +61,13 @@ const handleLogin = (event) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.token && data.user_id) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user_id", data.user_id);
-        window.location.href = "index.html";
+        window.location.href = "";
       } else {
-        console.log(data);
+        // console.log(data);
         document.getElementById("login-error").textContent = data.error;
       }
     })

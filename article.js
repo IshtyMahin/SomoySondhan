@@ -1,4 +1,4 @@
-async function fetchCategories() {
+const fetchCategories= async()=> {
   try {
     const response = await fetch(
       "https://somoysondhan-backend.onrender.com/article/categories/"
@@ -10,7 +10,7 @@ async function fetchCategories() {
   }
 }
 let admin = false;
-function isAdmin() {
+const isAdmin=async ()=> {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
@@ -27,7 +27,8 @@ function isAdmin() {
       .then((response) => response.json())
       .then((userData) => {
         if (userData) {
-          console.log(userData);
+          // console.log(userData);
+
           admin = userData.is_superuser;
         }
       })
@@ -36,11 +37,11 @@ function isAdmin() {
       });
   }
 }
-isAdmin();
 
-async function generateCategoryLinks() {
+
+const generateCategoryLinks= async ()=> {
   const categories = await fetchCategories();
-  console.log(categories);
+  // console.log(categories);
 
   const categoryLinksContainer = document.getElementById("category-links");
 
@@ -56,9 +57,9 @@ async function generateCategoryLinks() {
   });
 }
 
-window.addEventListener("load", generateCategoryLinks);
+window.addEventListener("load", generateCategoryLinks,isAdmin);
 
-function getWords(body, n) {
+const getWords=(body, n)=> {
   const Words = body.slice(0, n);
   return Words;
 }
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const categoryName = getQueryParam("category");
-  console.log(categoryName);
+  // console.log(categoryName);
   const NewsContainer = document.getElementById("news-section");
   if (categoryName === null) {
     fetch("https://somoysondhan-backend.onrender.com/article/categories/")
@@ -148,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((articles) => {
           articles.sort((a, b) => b.average_rating - a.average_rating);
 
-          console.log(articles);
+          // console.log(articles);
 
           if (articles.length > 0) {
             const sectionHTML = `
@@ -202,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-function deleteArticle(articleId) {
+const deleteArticle = (articleId) => {
   fetch(
     `https://somoysondhan-backend.onrender.com/article/list/${articleId}/`,
     {
@@ -211,12 +212,11 @@ function deleteArticle(articleId) {
   )
     .then((response) => {
       if (response.ok) {
-        console.log("Article deleted successfully");
-        location.reload(); // Example: Reload the page
+        // console.log("Article deleted successfully");
+        location.reload();
       } else {
-        // Handle error if deletion fails
         console.error("Failed to delete article:", response.statusText);
       }
     })
     .catch((error) => console.error("Error deleting article:", error));
-}
+};

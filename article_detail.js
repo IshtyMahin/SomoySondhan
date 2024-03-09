@@ -7,7 +7,7 @@ const getQueryParam = (name) => {
 
 const loadarticleDetails = () => {
   const articleId = getQueryParam("id");
-  console.log(articleId);
+  // console.log(articleId);
 
   fetch(`https://somoysondhan-backend.onrender.com/article/list/${articleId}/`)
     .then((res) => res.json())
@@ -23,7 +23,7 @@ const loadarticleDetails = () => {
           hour12: true,
         }
       );
-      console.log(data);
+      // console.log(data);
       const section = document.getElementById("detail_article");
       const div = document.createElement("div");
 
@@ -151,7 +151,7 @@ const renderRating = async () => {
   ratingSection.appendChild(averageRatingElement);
 };
 
-function handleReviewSubmission(event) {
+const handleReviewSubmission=(event)=> {
   event.preventDefault();
 
   const rating = document.getElementById("rating").value;
@@ -173,18 +173,17 @@ function handleReviewSubmission(event) {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      // Clear form fields after successful submission
+      // console.log(data);
+ 
       document.getElementById("rating").value = "";
       document.getElementById("review").value = "";
-      // Reload reviews
+ 
       reviewFetch(articleId);
       renderRating();
 
-      console.log("Submit request");
+      // console.log("Submit request");
     })
     .catch((error) => {
-      // Handle any errors that occur during the request
       console.error("Error submitting review:", error);
     });
 }
@@ -202,7 +201,7 @@ const reviewFetch = (articleId) => {
 
 const loadReview = async (data) => {
   let commentContainer = document.getElementById("commentContainer");
-  console.log(commentContainer);
+  // console.log(commentContainer);
   commentContainer.innerHTML = "";
 
   const fetchUsername = async (userId) => {
