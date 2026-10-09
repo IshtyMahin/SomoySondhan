@@ -62,11 +62,11 @@
     }
   }
 
-  function authHeaders(extra) {
+  function authHeaders(extra, skipAuth) {
     var headers = Object.assign({ Accept: "application/json" }, extra || {});
     var t = token();
     // The backend uses DRF TokenAuthentication, whose scheme keyword is `Token`.
-    if (t) headers.Authorization = "Token " + t;
+    if (!skipAuth && t) headers.Authorization = "Token " + t;
     return headers;
   }
 
@@ -77,7 +77,7 @@
   /** Low-level request. Resolves parsed JSON, rejects on failure. */
   function request(path, options) {
     options = options || {};
-    var init = { method: options.method || "GET", headers: authHeaders(options.headers) };
+    var init = { method: options.method || "GET", headers: authHeaders(options.headers, options.skipAuth) };
     if (options.body !== undefined) {
       if (isFormData(options.body)) {
         // Let the browser set the multipart boundary itself.
@@ -93,6 +93,17 @@
       var isJson = (res.headers.get("content-type") || "").indexOf("json") !== -1;
       return (isJson ? res.json().catch(function () { return null; }) : res.text()).then(function (data) {
         if (!res.ok) {
+          // If the backend returns 401 (e.g. invalid or expired token stored in localStorage):
+          // purge the stale token and retry public requests once without Authorization header.
+          if (res.status === 401 && !options._retried && init.headers && init.headers.Authorization) {
+            Session.clear();
+            var retryOpts = Object.assign({}, options, { _retried: true, skipAuth: true });
+            return request(path, retryOpts);
+          }
+          if (res.status === 401) {
+            Session.clear();
+          }
+
           var err = new Error(messageFrom(data, res.status));
           err.status = res.status;
           err.data = data;
