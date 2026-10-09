@@ -111,18 +111,25 @@
           fieldError("login-error", message);
           return;
         }
-        fieldSuccess("login-error", "Account created — check your inbox for the confirmation link.");
-        S.toast("Check your email to confirm your account.", "success", 6000);
-        var form = document.getElementById("register");
-        if (form) {
-          Array.prototype.forEach.call(form.querySelectorAll("input"), function (input) {
-            if (input.type !== "submit") input.disabled = true;
-          });
+        if (data && data.token && (data.user_id || data.id)) {
+          S.Session.save(data.token, data.user_id || data.id);
+          fieldSuccess("login-error", "Account created successfully! Welcome to Somoy Sondhan.");
+          S.toast("Account created! Redirecting...", "success", 2500);
+          setTimeout(function () {
+            window.location.href = "index.html";
+          }, 1000);
+        } else {
+          fieldSuccess("login-error", "Account created successfully! You can sign in now.");
+          S.toast("Account created! Redirecting to sign in...", "success", 3000);
+          setTimeout(function () {
+            window.location.href = "login.html";
+          }, 1200);
         }
       })
       .catch(function (err) {
         S.setLoading(button, false);
-        fieldError("login-error", err.message || "Could not create your account.");
+        var msg = (err && err.data && (firstError(err.data) || err.data.detail || err.data.error)) || err.message || "Could not create your account.";
+        fieldError("login-error", msg);
       });
   };
 

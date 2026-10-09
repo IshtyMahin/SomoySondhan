@@ -599,9 +599,11 @@
         return Promise.all([refreshRating(articleId), loadReviews(articleId)]);
       })
       .catch(function (err) {
-        errorBox.textContent = err.message || "Could not publish your review.";
+        var msg = (err && err.data && (err.data.detail || err.data.error || (Array.isArray(err.data.comment) ? err.data.comment[0] : err.data.comment))) || err.message || "Could not publish your review.";
+        errorBox.textContent = msg;
+        errorBox.className = "alert alert--error";
       })
-      .then(function () {
+      .finally(function () {
         S.setLoading(button, false);
       });
   }
@@ -631,67 +633,51 @@
     });
   }
 
-  function reviewCard(review, username) {
-    var name = username || "Reader";
+  function reviewCard(review) {
+    var name = review.display_name || review.username || "Reader";
+    var avatarHtml = review.avatar
+      ? '<img src="' + S.esc(review.avatar) + '" class="avatar avatar--md" alt="' + S.esc(name) + '">'
+      : '<span class="avatar avatar--md">' + S.esc(S.initials(name)) + "</span>";
+    var commentText = review.comment || review.body || review.review || "";
     return (
-      '<article class="card reveal" style="padding:1.25rem">' +
+      '<article class="card is-visible" style="padding:1.25rem">' +
       '<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">' +
-      '<span class="avatar avatar--md">' + S.esc(S.initials(name)) + "</span>" +
+      avatarHtml +
       '<div style="flex:1;min-width:0"><p style="margin:0;font-weight:700;font-size:.92rem">' + S.esc(name) + "</p>" +
       '<p style="margin:.1rem 0 0;font-size:.75rem;color:rgb(var(--text-subtle))">' +
       S.esc(S.fmtRelative(review.created_at)) + "</p></div>" +
       starRow(Number(review.rating || 0), 4) +
       "</div>" +
       '<p style="margin:0;font-size:.92rem;line-height:1.7;color:rgb(var(--text-muted))">' +
-      S.esc(review.comment) + "</p></article>"
+      S.esc(commentText) + "</p></article>"
     );
   }
 
-  function loadReviews(articleId) {
+  function loadReviews(articleId, fallbackReviews) {
     var host = document.getElementById("commentContainer");
     if (!host) return Promise.resolve();
+
+    function renderList(reviews) {
+      reviews = (reviews || []).slice().sort(function (a, b) {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      if (!reviews.length) {
+        host.innerHTML = S.emptyState({
+          title: "No reviews yet",
+          text: "Be the first to share what you thought of this story.",
+        });
+        return;
+      }
+      host.innerHTML = reviews.map(reviewCard).join("");
+    }
+
     return S.Api.reviews(articleId)
       .then(function (reviews) {
-        reviews = (reviews || []).slice().sort(function (a, b) {
-          return new Date(b.created_at) - new Date(a.created_at);
-        });
-        if (!reviews.length) {
-          host.innerHTML = S.emptyState({
-            title: "No reviews yet",
-            text: "Be the first to share what you thought of this story.",
-          });
-          return;
-        }
-        host.innerHTML = reviews
-          .slice(0, 6)
-          .map(function (r) { return reviewCard(r, r.username || null); })
-          .join("");
-        reveal();
-
-        // Fill in display names, keeping the search deterministic.
-        var names = {};
-        reviews.slice(0, 6).forEach(function (r) { names[r.user] = true; });
-        Object.keys(names).forEach(function (uid) {
-          S.Api.user(uid)
-            .then(function (user) {
-              var label = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username;
-              var cards = S.$$("#commentContainer .card");
-              reviews.slice(0, 6).forEach(function (r, index) {
-                if (String(r.user) !== String(uid)) return;
-                var card = cards[index];
-                if (!card) return;
-                var nameEl = card.querySelector("p");
-                var avatarEl = card.querySelector(".avatar");
-                if (nameEl) nameEl.textContent = label;
-                if (avatarEl) avatarEl.textContent = S.initials(label);
-              });
-            })
-            .catch(function () {});
-        });
+        var list = (reviews && reviews.length) ? reviews : (fallbackReviews || []);
+        renderList(list);
       })
-      .catch(function (err) {
-        console.error(err);
-        host.innerHTML = S.emptyState({ title: "Reviews unavailable", text: "We could not load the reviews for this story." });
+      .catch(function () {
+        renderList(fallbackReviews || []);
       });
   }
 
@@ -986,10 +972,6 @@
   function initDetail() {
     var host = document.getElementById("detail_article");
     if (!host) return;
-    if (!S.Session.isLoggedIn()) {
-      window.location.href = "login.html?next=" + encodeURIComponent("article_detail.html" + window.location.search);
-      return;
-    }
     var articleId = S.param("id");
     if (!articleId) {
       host.innerHTML = '<div class="shell section">' +
@@ -1011,7 +993,7 @@
         countViewOnce(articleId);
 
         document.title = article.headline + " — Somoy Sondhan";
-        return Promise.all([loadReviews(articleId), loadComments(article)]);
+        return Promise.all([loadReviews(articleId, article.reviews), loadComments(article)]);
       })
       .catch(function (err) {
         console.error(err);

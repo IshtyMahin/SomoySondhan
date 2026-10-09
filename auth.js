@@ -33,9 +33,15 @@ const handleRegistration = (event) => {
     showSpinner();
     SS.Api.register(info)
       .then((data) => {
-        element.textContent = "Check your mail for confirmation";
+        if (data && data.token && (data.user_id || data.id)) {
+          SS.Session.save(data.token, data.user_id || data.id);
+        }
+        element.textContent = "Account created successfully! Redirecting...";
         element.classList.remove("text-red-500");
         element.classList.add("text-green-500");
+        setTimeout(() => {
+          window.location.href = data && data.token ? "index.html" : "login.html";
+        }, 1200);
       })
       .catch((err) => {
         const data = (err && err.data) || {};
