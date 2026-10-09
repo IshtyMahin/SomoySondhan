@@ -302,6 +302,20 @@
     userStats: function () {
       return Api.get("/user/stats/");
     },
+    /** List registered users (staff only). */
+    users: function (search) {
+      var q = search ? "?search=" + encodeURIComponent(search) : "";
+      return Api.get("/user/list/" + q).then(unwrap);
+    },
+    blockUser: function (id) {
+      return Api.post("/user/list/" + id + "/block/", {});
+    },
+    unblockUser: function (id) {
+      return Api.post("/user/list/" + id + "/unblock/", {});
+    },
+    setUserRole: function (id, role) {
+      return Api.post("/user/list/" + id + "/role/", { role: role });
+    },
 
     /* --- tags --- */
     tags: function () {
