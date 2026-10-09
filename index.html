@@ -3,90 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>News Site</title>
-    <!-- Include Tailwind CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
+    <title>Somoy Sondhan — Truth in every moment</title>
+    <meta
+      name="description"
+      content="Somoy Sondhan — independent reporting, analysis and reader reviews from Bangladesh and beyond."
     />
-    <!-- Include Flowbite CSS -->
+    <meta name="theme-color" content="#0c0f15" />
     <link
-      href="https://cdn.jsdelivr.net/npm/flowbite@3.2.1/dist/flowbite.min.css"
-      rel="stylesheet"
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e11d2b'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white'%3E%E0%A6%B8%3C/text%3E%3C/svg%3E"
     />
-    <style>
-      .admin-item,
-      .profile-item {
-        display: none;
-      }
-    </style>
+
+    <!--
+      No external stylesheets on purpose: the design system in
+      assets/css/styles.css is self-contained, so the page renders
+      identically whether or not a CDN is reachable.
+    -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=5" />
+
+    <!-- Theme is applied before first paint, so there is no flash -->
+    <script src="assets/js/theme.js?v=5"></script>
   </head>
 
-  <body class="bg-gray-100">
-    <nav class="navbar bg-gray-800 text-white">
-      <div class="container mx-auto flex items-center justify-between py-4">
-        <a href="/" class="navbar-brand">SOMOY SONDHAN</a>
-        <div class="flex items-center space-x-4">
-          <a href="login.html" class="navbar-item">Login</a>
-          <a href="registration.html" class="navbar-item">Register</a>
+  <body>
+    <!-- Header, mobile drawer and ticker are injected by components.js -->
+    <div id="ticker"></div>
 
-          <a href="addArticle.html" class="admin-item">Add Article</a>
-          <a href="addCategory.html" class="admin-item">Add Category</a>
-          <a href="profile.html" class="profile-item">Profile</a>
-          <a onclick="handleLogout()" href="/" class="profile-item">Logout</a>
-        </div>
-      </div>
-    </nav>
+    <main class="page" id="news-section">
+      <!-- Hero, trending rail and category sections are rendered by articles.js -->
+    </main>
 
-    <!-- Category Links -->
-    <div class="container mx-auto py-4">
-      <div class="hidden lg:block">
-        <div id="category-links" class="flex justify-center">
-          <a href="#" class="home mr-4 text-gray-800">All</a>
-        </div>
-      </div>
-      <hr class="my-2 border-gray-700" />
-    </div>
+    <footer id="site-footer"></footer>
 
-    <div
-      id="loading-spinner"
-      class="fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
-    >
-      <div
-        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
-      ></div>
-    </div>
+    <!-- Legacy spinner hook; core.js shows a modern top progress bar instead -->
+    <div id="loading-spinner"></div>
 
-    <!-- Content -->
-    <section id="news-section" class="container mx-auto py-8"></section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 py-4 mt-80">
-      <div class="container mx-auto flex items-center justify-between">
-        <p class="text-sm">&copy; 2024 SOMOY SONDHAN. All rights reserved.</p>
-        <ul class="flex items-center space-x-4">
-          <li><a href="#" class="hover:text-white">Terms of Service</a></li>
-          <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-          <li><a href="#" class="hover:text-white">Contact Us</a></li>
-        </ul>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/dist/jwt-decode.min.js"></script>
-    <script>
-      const homeElements = document.getElementsByClassName("home");
-
-      for (let i = 0; i < homeElements.length; i++) {
-        homeElements[i].addEventListener("click", function (event) {
-          event.preventDefault();
-          window.location.href =
-            window.location.origin + window.location.pathname;
-        });
-      }
-    </script>
-
-    <script src="/snippet.js"></script>
-    <script src="article.js"></script>
-    <script src="navbar.js"></script>
+    <script src="assets/js/core.js?v=5"></script>
+    <script src="assets/js/components.js?v=5"></script>
+    <script src="assets/js/articles.js?v=5"></script>
+    <script src="assets/js/layout-probe.js?v=5"></script>
   </body>
 </html>

@@ -3,79 +3,175 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Article</title>
+    <title>New article — Somoy Sondhan</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0c0f15" />
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e11d2b'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white'%3E%E0%A6%B8%3C/text%3E%3C/svg%3E"
     />
-    <style>
-      .admin-item,
-      .profile-item {
-        display: none;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100">
-    <nav class="navbar bg-gray-800 text-white">
-      <div class="container mx-auto flex items-center justify-between py-4">
-        <a href="/" class="navbar-brand">SOMOY SONDHAN</a>
-        <div class="flex items-center space-x-4">
-          <a href="login.html" class="navbar-item">Login</a>
-          <a href="registration.html" class="navbar-item">Register</a>
 
-          <a href="addArticle.html" class="admin-item">Add Article</a>
-          <a href="addCategory.html" class="admin-item">Add Category</a>
-          <a href="profile.html" class="profile-item">Profile</a>
-          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+    <!--
+      No external stylesheets on purpose: the design system in
+      assets/css/styles.css is self-contained, so the page renders
+      identically whether or not a CDN is reachable.
+    -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=5" />
+    <script src="assets/js/theme.js?v=5"></script>
+  </head>
+
+  <body>
+    <div id="ticker"></div>
+
+    <main class="page">
+      <div id="page-header"></div>
+
+      <div class="shell section section--tight" id="editor-shell">
+        <div class="article-grid">
+          <!-- Writing surface -->
+          <form id="add-article-form" class="card" style="padding: clamp(1.25rem, 3vw, 2rem)" novalidate>
+            <div class="field">
+              <label class="field__label" for="headline">
+                Headline
+                <span class="field__hint" id="headline-count">0 / 1000</span>
+              </label>
+              <input
+                class="input"
+                style="font-family: var(--font-serif); font-size: 1.15rem; padding: 0.9rem 1rem"
+                type="text"
+                id="headline"
+                name="headline"
+                placeholder="Write a headline readers cannot scroll past"
+                maxlength="1000"
+                required
+              />
+            </div>
+
+            <div class="field" style="margin-bottom: 0.5rem">
+              <label class="field__label" for="body">
+                Story
+                <span class="field__hint" id="body-count">0 / 20000</span>
+              </label>
+              <textarea
+                class="textarea"
+                id="body"
+                name="body"
+                rows="16"
+                style="font-size: 1rem; line-height: 1.75"
+                placeholder="Start with the most important fact. Separate paragraphs with a blank line."
+                required
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <span class="field__label">Sections <span class="field__hint">choose one or more</span></span>
+              <div id="categories" class="chip-group">
+                <span class="sk sk--line" style="width: 7rem; height: 2rem; border-radius: 999px"></span>
+                <span class="sk sk--line" style="width: 5.5rem; height: 2rem; border-radius: 999px"></span>
+                <span class="sk sk--line" style="width: 6.5rem; height: 2rem; border-radius: 999px"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="summary">
+                Summary <span class="field__hint">optional · a short standfirst</span>
+              </label>
+              <textarea
+                class="textarea"
+                id="summary"
+                name="summary"
+                rows="2"
+                maxlength="400"
+                placeholder="One or two lines that capture the story."
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="tags">
+                Tags <span class="field__hint">comma-separated</span>
+              </label>
+              <input class="input" type="text" id="tags" name="tags" placeholder="e.g. politics, economy, dhaka" />
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cover-image">
+                Cover image <span class="field__hint">optional</span>
+              </label>
+              <input class="input" type="file" id="cover-image" name="cover_image" accept="image/*" />
+              <div id="cover-preview" style="margin-top: 0.75rem"></div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="cover-caption">
+                Cover caption <span class="field__hint">optional</span>
+              </label>
+              <input class="input" type="text" id="cover-caption" name="cover_caption" maxlength="200" />
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="status">Status</label>
+              <select class="input" id="status" name="status">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+
+            <div id="form-error" class="alert alert--error" role="alert"></div>
+
+            <div class="form-actions">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+                <button type="button" class="btn btn--soft" id="preview-btn">Save draft &amp; preview</button>
+                <a class="btn btn--ghost" href="index.html">Cancel</a>
+              </div>
+              <button type="submit" class="btn btn--primary btn--lg" id="publish-btn">
+                Publish article
+              </button>
+            </div>
+          </form>
+
+          <!-- Guidance sidebar -->
+          <aside class="sticky-side" style="display: grid; gap: 1.25rem; align-content: start">
+            <div class="card" style="padding: 1.25rem">
+              <p class="section-head__eyebrow">Checklist</p>
+              <ul class="list-plain" style="display: grid; gap: 0.7rem; font-size: 0.875rem; color: rgb(var(--text-muted))">
+                <li>One clear idea per paragraph.</li>
+                <li>Attribution and quotes early.</li>
+                <li>Numbers over adjectives.</li>
+                <li>Read it aloud before publishing.</li>
+              </ul>
+            </div>
+            <div class="card" style="padding: 1.25rem">
+              <p class="section-head__eyebrow">Editorial policy</p>
+              <p style="margin: 0; font-size: 0.85rem; line-height: 1.65; color: rgb(var(--text-muted))">
+                Every published story is attributed to the newsroom desk and open to reader review.
+                Corrections are made in the open.
+              </p>
+              <a class="link-underline" style="display: inline-block; margin-top: 0.85rem; font-size: 0.82rem" href="addCategory.html">
+                Manage sections
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
-    </nav>
-    <div class="min-h-screen flex items-center justify-center">
-      <div class="container bg-white p-8 rounded shadow-md w-full">
-        <h1 class="text-3xl text-center font-semibold mb-4">Add Article</h1>
-        <form id="add-article-form" onsubmit="handleSubmit(event)">
-          <input
-            type="text"
-            id="headline"
-            placeholder="Headline"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <textarea
-            id="body"
-            placeholder="Body"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            rows="6"
-            required
-          ></textarea>
-          <select
-            id="categories"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            multiple
-            required
-          ></select>
-          <input
-            type="submit"
-            class="submit-btn w-full px-4 py-2 bg-gray-800 text-white rounded"
-            value="Add Article"
-          />
-        </form>
-        <p class="mt-4 text-center text-gray-600">
-          Go back to <a href="" class="text-blue-800 hover:underline">Home</a>.
-        </p>
-      </div>
-    </div>
-    <div
-      id="loading-spinner"
-      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
-    >
-      <div
-        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
-      ></div>
-    </div>
-    <script src="/snippet.js"></script>
-    <script src="/auth.js"></script>
-    <script src="/navbar.js"></script>
-    <script src="/addArticle.js"></script>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <div id="loading-spinner"></div>
+
+    <script>
+      window.SS_PAGE = {
+        eyebrow: "Editorial desk",
+        title: "New article",
+        subtitle: "Publish a story to Somoy Sondhan. You can save a draft and preview it before it goes live.",
+        crumbs: [
+          { label: "Home", href: "index.html" },
+          { label: "New article" },
+        ],
+      };
+    </script>
+    <script src="assets/js/core.js?v=5"></script>
+    <script src="assets/js/components.js?v=5"></script>
+    <script src="assets/js/admin.js?v=5"></script>
   </body>
 </html>

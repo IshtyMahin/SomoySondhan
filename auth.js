@@ -1,81 +1,89 @@
+/**
+ * Legacy auth helpers — registration and login.
+ *
+ * These are kept for backward compatibility with pages that include
+ * auth.js directly.  New code should use SS.Api (defined in core.js).
+ *
+ * The backend base URL is resolved from SS.Api so it never needs to be
+ * hard-coded here.
+ */
+
+/* global SS */
+
+const getValue = (id) => {
+  const el = document.getElementById(id);
+  return el ? el.value : "";
+};
+
 const handleRegistration = (event) => {
   event.preventDefault();
-  const username = getValue("username");
-  const first_name = getValue("first-name");
-  const last_name = getValue("last-name");
-  const email = getValue("email");
-  const password = getValue("password");
-  const confirm_password = getValue("confirm-password");
   const info = {
-    'username':username,
-    'first_name':first_name,
-    'last_name':last_name,
-    'email':email,
-    'password':password,
-    'confirm_password':confirm_password,
+    username: getValue("username"),
+    first_name: getValue("first-name"),
+    last_name: getValue("last-name"),
+    email: getValue("email"),
+    password: getValue("password"),
+    confirm_password: getValue("confirm-password"),
   };
 
-  console.log(info);
-  showSpinner()
-  fetch("https://somoysondhan-backend.onrender.com/user/register/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(info),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      const element = document.getElementById("login-error")
-      if (Array.isArray(data['username'])) {
-        element.textContent =
-          data["username"][0];
-      }
-      else if (Array.isArray(data["password"])) {
-        element.textContent = data["password"][0];
-      } else if (data["error"]) {
-        element.textContent = data["error"];
-      } else {
-        
+  const element = document.getElementById("login-error");
+  if (!element) return;
+
+  if (window.SS && SS.Api) {
+    showSpinner();
+    SS.Api.register(info)
+      .then((data) => {
         element.textContent = "Check your mail for confirmation";
         element.classList.remove("text-red-500");
         element.classList.add("text-green-500");
-  
-      }
-      hideSpinner()
-    })
-};
-const getValue = (id) => {
-  const value = document.getElementById(id).value;
-  return value;
+      })
+      .catch((err) => {
+        const data = (err && err.data) || {};
+        if (Array.isArray(data["username"])) {
+          element.textContent = data["username"][0];
+        } else if (Array.isArray(data["password"])) {
+          element.textContent = data["password"][0];
+        } else if (data["error"]) {
+          element.textContent = data["error"];
+        } else {
+          element.textContent = err.message || "Registration failed.";
+        }
+      })
+      .finally(() => hideSpinner());
+    return;
+  }
+
+  // Fallback when SS is not loaded yet (should not happen in normal flow).
+  console.error("SS.Api not available — core.js must load before auth.js");
 };
 
 const handleLogin = (event) => {
   event.preventDefault();
   const username = getValue("login-username");
   const password = getValue("login-password");
-  // console.log(username, password);
-  showSpinner()
-  fetch("https://somoysondhan-backend.onrender.com/user/login/", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      // console.log(data);
-      if (data.token && data.user_id) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user_id", data.user_id);
-        window.location.href = "/";
-      } else {
-        // console.log(data);
-        document.getElementById("login-error").textContent = data.error;
-      }
-      hideSpinner()
-    })
-    .catch((error) => {
-      document.getElementById("login-error").textContent = error.message;
-    });
+  const errorEl = document.getElementById("login-error");
+
+  if (window.SS && SS.Api) {
+    showSpinner();
+    SS.Api.login(username, password)
+      .then((data) => {
+        if (data.token && data.user_id) {
+          SS.Session.save(data.token, data.user_id);
+          // Honour a ?next= redirect, fall back to the homepage.
+          const next = new URLSearchParams(window.location.search).get("next");
+          window.location.href = next || "index.html";
+        } else if (errorEl) {
+          errorEl.textContent = data.error || "Login failed.";
+        }
+      })
+      .catch((err) => {
+        const msg =
+          (err.data && (err.data.error || err.data.detail)) || err.message || "Login failed.";
+        if (errorEl) errorEl.textContent = msg;
+      })
+      .finally(() => hideSpinner());
+    return;
+  }
+
+  console.error("SS.Api not available — core.js must load before auth.js");
 };

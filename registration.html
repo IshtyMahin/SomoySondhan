@@ -3,109 +3,88 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
+    <title>Create account — Somoy Sondhan</title>
+    <meta name="description" content="Create your free Somoy Sondhan reader account." />
+    <meta name="theme-color" content="#0c0f15" />
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e11d2b'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white'%3E%E0%A6%B8%3C/text%3E%3C/svg%3E"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.css"
-    />
-    <style>
-      .admin-item,
-      .profile-item {
-        display: none;
-      }
-    </style>
+
+    <!--
+      No external stylesheets on purpose: the design system in
+      assets/css/styles.css is self-contained, so the page renders
+      identically whether or not a CDN is reachable.
+    -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=5" />
+    <script src="assets/js/theme.js?v=5"></script>
   </head>
-  <body class="bg-gray-100">
-    <nav class="navbar bg-gray-800 text-white">
-      <div class="container mx-auto flex items-center justify-between py-4">
-        <a href="" class="navbar-brand">SOMOY SONDHAN</a>
-        <div class="flex items-center space-x-4">
-          <a href="login.html" class="navbar-item">Login</a>
-          <a href="registration.html" class="navbar-item">Register</a>
 
-          <a href="addArticle.html" class="admin-item">Add Article</a>
-          <a href="addCategory.html" class="admin-item">Add Category</a>
-          <a href="profile.html" class="profile-item">Profile</a>
-          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+  <body>
+    <div id="ticker"></div>
+
+    <main class="auth-shell">
+      <div class="auth-card auth-card--wide">
+        <div class="auth-card__head">
+          <span class="badge badge--outline-brand" style="margin-bottom: 0.75rem">Free account</span>
+          <h1>Join Somoy Sondhan</h1>
+          <p>Create an account to rate stories, join the discussion and follow your sections.</p>
         </div>
-      </div>
-    </nav>
 
-    <div class="min-h-screen flex items-center justify-center">
-      <div id="register" class="bg-white p-8 rounded shadow-md max-w-md w-full">
-        <h1 class="text-3xl font-semibold mb-4">Please Register</h1>
-        <form action="" onsubmit="handleRegistration(event)">
-          <input
-            type="text"
-            id="first-name"
-            placeholder="First Name"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="text"
-            id="last-name"
-            placeholder="Last Name"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="text"
-            id="email"
-            placeholder="Email"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="password"
-            id="confirm-password"
-            placeholder="Confirm Password"
-            class="w-full px-4 py-2 mb-4 rounded border"
-            required
-          />
-          <input
-            type="submit"
-            class="submit-btn w-full px-4 py-2 bg-gray-800 text-white rounded"
-            value="Registration"
-          />
+        <form id="register" onsubmit="handleRegistration(event)" novalidate>
+          <div class="form-grid form-grid--2">
+            <div class="field">
+              <label class="field__label" for="first-name">First name</label>
+              <input class="input" type="text" id="first-name" name="first_name" placeholder="Rahim" autocomplete="given-name" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="last-name">Last name</label>
+              <input class="input" type="text" id="last-name" name="last_name" placeholder="Uddin" autocomplete="family-name" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="username">Username</label>
+              <input class="input" type="text" id="username" name="username" placeholder="rahim_uddin" autocomplete="username" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="email">Email</label>
+              <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="password">Password</label>
+              <input class="input" type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="confirm-password">Confirm password</label>
+              <input class="input" type="password" id="confirm-password" name="confirm_password" placeholder="Repeat your password" autocomplete="new-password" required />
+            </div>
+          </div>
+
+          <div id="login-error" class="alert alert--error" role="alert"></div>
+
+          <button type="submit" class="btn btn--primary btn--block btn--lg" id="register-submit">
+            Create my account
+          </button>
+
+          <p style="margin: 0.9rem 0 0; font-size: 0.78rem; color: rgb(var(--text-subtle)); text-align: center">
+            We will email you a confirmation link before you can sign in.
+          </p>
         </form>
-        <div id="login-error" class="text-2xl text-red-500 pb-4"></div>
-        <p class="mt-4 text-center text-gray-600">
+
+        <div class="divider">or</div>
+
+        <p style="text-align: center; margin: 0; font-size: 0.9rem; color: rgb(var(--text-muted))">
           Already have an account?
-          <a href="login.html" class="text-blue-800 hover:underline">Login</a>
+          <a class="link-underline" href="login.html">Sign in</a>
         </p>
       </div>
-    </div>
-    <div
-      id="loading-spinner"
-      class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
-    >
-      <div
-        class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"
-      ></div>
-    </div>
-    <script src="/snippet.js"></script>
-    <script src="/auth.js"></script>
-    <script src="/navbar.js"></script>
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@flowbite/modal@0.4.0/dist/flowbite-modal.min.js"></script>
+    <footer id="site-footer"></footer>
+
+    <div id="loading-spinner"></div>
+
+    <script src="assets/js/core.js?v=5"></script>
+    <script src="assets/js/components.js?v=5"></script>
+    <script src="assets/js/auth.js?v=5"></script>
   </body>
 </html>

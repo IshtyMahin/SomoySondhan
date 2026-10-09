@@ -1,58 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Category</title>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-  />
-  <style>
-      .admin-item,
-      .profile-item {
-        display: none;
-      }
-    </style>
-</head>
-<body class="bg-gray-100">
-  <nav class="navbar bg-gray-800 text-white">
-      <div class="container mx-auto flex items-center justify-between py-4">
-        <a href="/" class="navbar-brand">SOMOY SONDHAN</a>
-        <div class="flex items-center space-x-4">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New section — Somoy Sondhan</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0c0f15" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e11d2b'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='white'%3E%E0%A6%B8%3C/text%3E%3C/svg%3E"
+    />
 
-          <a href="login.html" class="navbar-item">Login</a>
-          <a href="registration.html" class="navbar-item">Register</a>
-          
-         
-          <a href="addArticle.html" class="admin-item">Add Article</a>
-          <a href="addCategory.html" class="admin-item">Add Category</a>
-          <a href="profile.html" class="profile-item">Profile</a>
-          <a onclick="handleLogout()" href="#" class="profile-item">Logout</a>
+    <!--
+      No external stylesheets on purpose: the design system in
+      assets/css/styles.css is self-contained, so the page renders
+      identically whether or not a CDN is reachable.
+    -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=5" />
+    <script src="assets/js/theme.js?v=5"></script>
+  </head>
+
+  <body>
+    <div id="ticker"></div>
+
+    <main class="page">
+      <div id="page-header"></div>
+
+      <div class="shell section section--tight" id="editor-shell">
+        <div class="article-grid">
+          <form id="add-category-form" class="card" style="padding: clamp(1.25rem, 3vw, 2rem)" novalidate>
+            <div class="field">
+              <label class="field__label" for="category">
+                Section name
+                <span class="field__hint" id="category-count">0 / 200</span>
+              </label>
+              <input
+                class="input"
+                type="text"
+                id="category"
+                name="category"
+                placeholder="e.g. Technology"
+                maxlength="200"
+                required
+              />
+              <p class="field__hint" style="display: block; margin-top: 0.5rem">
+                Readers will reach it at
+                <code id="slug-preview" style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem">index.html?category=…</code>
+              </p>
+            </div>
+
+            <div id="form-error" class="alert alert--error" role="alert"></div>
+
+            <div class="form-actions">
+              <a class="btn btn--ghost" href="index.html">Cancel</a>
+              <button type="submit" class="btn btn--primary btn--lg" id="category-submit">Create section</button>
+            </div>
+          </form>
+
+          <aside class="sticky-side" style="display: grid; gap: 1.25rem; align-content: start">
+            <div class="card" style="padding: 1.25rem">
+              <p class="section-head__eyebrow">Existing sections</p>
+              <div id="existing-sections">
+                <span class="sk sk--line" style="width: 70%"></span>
+              </div>
+            </div>
+            <div class="card" style="padding: 1.25rem">
+              <p class="section-head__eyebrow">Naming tips</p>
+              <ul class="list-plain" style="display: grid; gap: 0.7rem; font-size: 0.875rem; color: rgb(var(--text-muted))">
+                <li>Short and unmistakable: “Politics”, not “Political news articles”.</li>
+                <li>Avoid duplicates — check the list on the left first.</li>
+                <li>Each story can belong to more than one section.</li>
+              </ul>
+            </div>
+          </aside>
         </div>
       </div>
-    </nav>
-  <div class="min-h-screen flex items-center justify-center">
-    <div class="container bg-white p-8 rounded shadow-md w-full">
-      <h1 class="text-3xl text-center font-semibold mb-4">Add Category</h1>
-      <form id="add-article-form" onsubmit="handleCategorySubmit(event)">
-        <input type="text" id="category" placeholder="Category" class="w-full px-4 py-2 mb-4 rounded border" required>
-        
-        <input type="submit" class="submit-btn w-full px-4 py-2 bg-gray-800 text-white rounded" value="Add Article">
-      </form>
-      <p class="mt-4 text-center text-gray-600">
-        Go back to <a href="" class="text-blue-800 hover:underline">Home</a>.
-      </p>
-    </div>
-  </div>
-  <div id="loading-spinner" class="hidden fixed top-0 left-0 w-screen h-screen bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-  <div class="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-100"></div>
-</div>
-<script src="/snippet.js"></script>
-  <script src="/auth.js"></script>
-  <script src="/navbar.js"></script>
-  <script src="/addArticle.js"></script>
+    </main>
 
+    <footer id="site-footer"></footer>
 
-</body>
+    <div id="loading-spinner"></div>
+
+    <script>
+      window.SS_PAGE = {
+        eyebrow: "Editorial desk",
+        title: "New section",
+        subtitle: "Sections group stories across the homepage, the navigation menu and the ticker.",
+        crumbs: [
+          { label: "Home", href: "index.html" },
+          { label: "New section" },
+        ],
+      };
+    </script>
+    <script src="assets/js/core.js?v=5"></script>
+    <script src="assets/js/components.js?v=5"></script>
+    <script src="assets/js/admin.js?v=5"></script>
+  </body>
 </html>
